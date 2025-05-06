@@ -46,7 +46,7 @@ def validate_contact_phone(value:str):
 
 def validate_contact_message(value:str):
     if validate_empty(value):
-        return { 'status': True, 'message': messages['phone'] }
+        return { 'status': True, 'message': messages['message'] }
     return { 'status': False, 'message': '' }
 
 def validate_fields_create(name:str, email:str, phone:str, message:str):

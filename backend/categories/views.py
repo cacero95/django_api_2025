@@ -5,11 +5,28 @@ from .models import Category
 from .serializers import CategorySerializer
 from django.utils.text import slugify
 from recipe.models import Recipe
-from security.decorators import with_token
+from security.decorators import with_token, with_token2
 from helpers.validate_category import validate_fields_create
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
+from django.utils.decorators import method_decorator
+
+def my_decorator(view_func):
+    def _wrapped_view(request, *args, **kwargs):
+        print("Custom decorator called")
+        return view_func(request, *args, **kwargs)
+    return _wrapped_view
 
 class Categories(APIView):
-    
+    @swagger_auto_schema(
+        operation_description = 'create a new user',
+        responses = {
+            200: 'Success',
+            401: 'Unauthorized'
+        },
+        security=[{'Token': []}]
+    )
+    @method_decorator([with_token2])
     def get(self, request):
         data = Category.objects.order_by('-id').all()
         data_json = CategorySerializer(data, many=True)

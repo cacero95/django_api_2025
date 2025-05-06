@@ -5,9 +5,28 @@ from .models import Contact
 from helpers.validate_contacts import validate_fields_create
 from datetime import datetime
 from utils.email_actions import send_email
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 
 # Create your views here.
 class Contacts(APIView):
+    @swagger_auto_schema(
+        operation_description = 'Endpoint create a new contact',
+        responses = {
+            200: 'Success',
+            400: 'Bad request'
+        },
+        request_body = openapi.Schema(
+            type = openapi.TYPE_OBJECT,
+            properties = {
+                'name': openapi.Schema( type = openapi.TYPE_STRING ),
+                'email': openapi.Schema( type = openapi.TYPE_STRING ),
+                'phone': openapi.Schema( type = openapi.TYPE_STRING ),
+                'message': openapi.Schema( type = openapi.TYPE_STRING, description = 'message to the new contact' ),
+            },
+            required = ['name', 'email', 'phone', 'message']
+        )
+    )
     def post(self, request):
         status, message = validate_fields_create(**request.data).values()
         if status:

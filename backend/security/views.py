@@ -9,9 +9,27 @@ from .models import UserMetaData
 from utils.email_actions import send_email
 import os
 from django.contrib.auth import authenticate
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 
 # Create your views here.
 class Security(APIView):
+    @swagger_auto_schema(
+        operation_description = 'create a new user',
+        responses = {
+            200: 'Success',
+            400: 'Bad request'
+        },
+        request_body = openapi.Schema(
+            type = openapi.TYPE_OBJECT,
+            properties = {
+                'name': openapi.Schema( type = openapi.TYPE_STRING ),
+                'email': openapi.Schema( type = openapi.FORMAT_EMAIL ),
+                'password': openapi.Schema( type = openapi.FORMAT_PASSWORD ),
+            },
+            required = ['name', 'email', 'password']
+        )
+    )
     def post(self, request):
         try:
             status, message = validate_fields_create(**request.data).values()
@@ -68,6 +86,21 @@ class VerifyUser(APIView):
             }, status=HTTPStatus.NOT_FOUND)
         
 class LoginUser(APIView):
+    @swagger_auto_schema(
+        operation_description = 'Login',
+        responses = {
+            200: 'Success',
+            400: 'Bad request'
+        },
+        request_body = openapi.Schema(
+            type = openapi.TYPE_OBJECT,
+            properties = {
+                'email': openapi.Schema( type = openapi.FORMAT_EMAIL ),
+                'password': openapi.Schema( type = openapi.FORMAT_PASSWORD ),
+            },
+            required = ['email', 'password']
+        )
+    )
     def post(self, request):
         email = request.data['email']
         password = request.data['password']
