@@ -7,3 +7,4 @@ django-autoslug==1.9.9
 python-jose==3.4.0
 django-cors-headers==4.4.0
 drf-yasg==1.21.10
+gunicorn==23.0.0
