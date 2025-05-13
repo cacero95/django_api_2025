@@ -95,7 +95,9 @@ def create_token(user: User) -> ResponseToken:
         return {
             'status': True,
             'message': f'welcome {user.first_name} {user.last_name}',
-            'token': token
+            'token': token,
+            'username': f'{user.username}',
+            'name': f'{user.first_name} {user.last_name}'
         }
     except Exception as err:
         return { 'status': False, 'message': 'Login Failed', 'token': '' }

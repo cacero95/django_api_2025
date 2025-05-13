@@ -6,3 +6,5 @@ class Response(TypedDict):
 
 class ResponseToken(TypedDict, Response):
     token: str
+    username: str
+    name: str

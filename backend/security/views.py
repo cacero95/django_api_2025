@@ -116,12 +116,14 @@ class LoginUser(APIView):
                     'status': False,
                     'message': 'unauthorized'
                 }, status=HTTPStatus.UNAUTHORIZED)
-            status, message, token = create_token(user).values()
+            status, message, token, username, name = create_token(user).values()
             status_code = HTTPStatus.OK if status else HTTPStatus.BAD_REQUEST
             return JsonResponse({
                 'status': status,
                 'message': message,
-                'token': token
+                'token': token,
+                'username': username,
+                'name': name
             }, status=status_code)
         except User.DoesNotExist:
             return JsonResponse({
